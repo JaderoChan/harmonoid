@@ -42,7 +42,9 @@ class _NowPlayingLyricsState extends State<NowPlayingLyrics> {
       child: Consumer<LyricsNotifier>(
         builder: (context, lyricsNotifier, _) {
           return LyricsView(
-            index: lyricsNotifier.index,
+            index: lyricsNotifier.highlightedIndices.isNotEmpty 
+              ? lyricsNotifier.highlightedIndices 
+              : lyricsNotifier.index,
             lyrics: lyricsNotifier.lyrics.map((e) => e.text).toList(),
             padding: EdgeInsets.only(
               left: 32.0,
@@ -79,7 +81,9 @@ class _NowPlayingLyricsState extends State<NowPlayingLyrics> {
       child: Consumer<LyricsNotifier>(
         builder: (context, lyricsNotifier, _) {
           return LyricsView(
-            index: lyricsNotifier.index,
+            index: lyricsNotifier.highlightedIndices.isNotEmpty 
+              ? lyricsNotifier.highlightedIndices 
+              : lyricsNotifier.index,
             lyrics: lyricsNotifier.lyrics.map((e) => e.text).toList(),
             padding: EdgeInsets.only(
               left: 16.0,

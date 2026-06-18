@@ -56,6 +56,7 @@ class LyricsNotifier extends ChangeNotifier {
 
         if (current != _current && currentDuration != _currentDuration && currentPosition > Duration.zero) {
           index = -1;
+          highlightedIndices.clear();
           lyrics.clear();
           _timestampsAndIndexes.clear();
           notifyListeners();
@@ -70,14 +71,21 @@ class LyricsNotifier extends ChangeNotifier {
           await retrieve();
 
           for (int i = 0; i < lyrics.length; i++) {
-            _timestampsAndIndexes[lyrics[i].timestamp] = i;
+            final timestamp = lyrics[i].timestamp;
+            if (!_timestampsAndIndexes.containsKey(timestamp)) {
+              _timestampsAndIndexes[timestamp] = <int>{};
+            }
+            _timestampsAndIndexes[timestamp]!.add(i);
           }
         }
 
         int? nextTime = _timestampsAndIndexes.firstKeyAfter(state.position.inMilliseconds);
-        int? nextIndex = _timestampsAndIndexes[nextTime];
+        final nextIndices = _timestampsAndIndexes[nextTime];
 
-        if (nextTime != null && nextIndex != null) {
+        if (nextTime != null && nextIndices != null && nextIndices.isNotEmpty) {
+          // Get the first (minimum) index as primary for notification display
+          final firstIndex = nextIndices.first;
+          int nextIndex = firstIndex;
           if (nextIndex > 0) nextIndex--;
 
           // --------------------------------------------------
@@ -88,6 +96,7 @@ class LyricsNotifier extends ChangeNotifier {
 
           if (nextIndex != index) {
             index = nextIndex;
+            highlightedIndices = nextIndices.toSet();
             notifyListeners();
             // --------------------------------------------------
             displayNotification(index);
@@ -112,6 +121,10 @@ class LyricsNotifier extends ChangeNotifier {
 
   /// Index.
   int index = -1;
+
+  /// Highlighted indices for lyrics that should be focused at the current time.
+  /// Supports multiple lyric lines at the same timestamp (e.g., original/translated).
+  Set<int> highlightedIndices = <int>{};
 
   /// Lyrics.
   final Lyrics lyrics = <Lyric>[];
@@ -342,6 +355,6 @@ class LyricsNotifier extends ChangeNotifier {
   Duration? _currentDuration;
   bool _notificationVisible = true;
   bool _initializeNotificationInvoked = false;
-  final SplayTreeMap<int, int> _timestampsAndIndexes = SplayTreeMap<int, int>();
+  final SplayTreeMap<int, Set<int>> _timestampsAndIndexes = SplayTreeMap<int, Set<int>>();
   final Lock _lock = Lock();
 }

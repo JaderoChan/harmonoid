@@ -344,7 +344,7 @@ class M2MobileNowPlayingBarState extends State<M2MobileNowPlayingBar> {
             IconButton(
               onPressed: () => SleepTimerDialog.show(context),
               icon: const Icon(Icons.schedule),
-              tooltip: 'Sleep Timer',
+              tooltip: Localization.instance.SLEEP_TIMER,
             ),
             Consumer<MediaLibrary>(
               builder: (context, mediaLibrary, _) {

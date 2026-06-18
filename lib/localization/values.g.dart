@@ -235,6 +235,16 @@ class Values {
   late String SORT_BY;
   late String SPEED;
   late String START;
+  late String SLEEP_TIMER;
+  late String SLEEP_TIMER_STOP_PLAYBACK_AFTER;
+  late String SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_FINISHES;
+  late String SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_HINT;
+  late String SLEEP_TIMER_REACHED_WAIT_FOR_TRACK_END;
+  late String SLEEP_TIMER_REMAINING;
+  late String SLEEP_TIMER_CANCEL;
+  late String SLEEP_TIMER_MINUTES_SUFFIX;
+  late String DESKTOP_LYRICS_LOCK;
+  late String DESKTOP_LYRICS_UNLOCK;
   late String THEME;
   late String THEME_MODE_DARK;
   late String THEME_MODE_LIGHT;

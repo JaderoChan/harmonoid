@@ -228,7 +228,7 @@ class DesktopNowPlayingBarState extends State<DesktopNowPlayingBar> {
                                       icon: const Icon(Icons.schedule),
                                       splashRadius: 20.0,
                                       iconSize: 20.0,
-                                      tooltip: 'Sleep Timer',
+                                      tooltip: Localization.instance.SLEEP_TIMER,
                                     ),
                                     const SizedBox(width: 12.0),
                                   ],

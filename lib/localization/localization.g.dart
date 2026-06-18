@@ -240,6 +240,16 @@ class LocalizationBase extends Values {
     SORT_BY = map['SORT_BY']!;
     SPEED = map['SPEED']!;
     START = map['START']!;
+    SLEEP_TIMER = map['SLEEP_TIMER'] ?? 'Sleep Timer';
+    SLEEP_TIMER_STOP_PLAYBACK_AFTER = map['SLEEP_TIMER_STOP_PLAYBACK_AFTER'] ?? 'Stop playback after';
+    SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_FINISHES = map['SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_FINISHES'] ?? 'Stop after current track finishes';
+    SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_HINT = map['SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_HINT'] ?? 'If time is up while music is playing, wait for this track to end.';
+    SLEEP_TIMER_REACHED_WAIT_FOR_TRACK_END = map['SLEEP_TIMER_REACHED_WAIT_FOR_TRACK_END'] ?? 'Timer reached. Playback will stop after this track.';
+    SLEEP_TIMER_REMAINING = map['SLEEP_TIMER_REMAINING'] ?? 'Remaining';
+    SLEEP_TIMER_CANCEL = map['SLEEP_TIMER_CANCEL'] ?? 'Cancel Timer';
+    SLEEP_TIMER_MINUTES_SUFFIX = map['SLEEP_TIMER_MINUTES_SUFFIX'] ?? 'min';
+    DESKTOP_LYRICS_LOCK = map['DESKTOP_LYRICS_LOCK'] ?? 'Lock';
+    DESKTOP_LYRICS_UNLOCK = map['DESKTOP_LYRICS_UNLOCK'] ?? 'Unlock';
     THEME = map['THEME']!;
     THEME_MODE_DARK = map['THEME_MODE_DARK']!;
     THEME_MODE_LIGHT = map['THEME_MODE_LIGHT']!;

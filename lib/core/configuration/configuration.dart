@@ -122,6 +122,13 @@ class Configuration extends ConfigurationBase {
     _nowPlayingAudioFormat = await _read<bool, bool>(kKeyNowPlayingAudioFormat, defaults);
     _nowPlayingDisplayUponPlay = await _read<bool, bool>(kKeyNowPlayingDisplayUponPlay, defaults);
     _sleepTimerStopAfterTrackEnd = await _read<bool, bool>(kKeySleepTimerStopAfterTrackEnd, defaults);
+    _desktopLyricsEnabled = await _read<bool, bool>(kKeyDesktopLyricsEnabled, defaults);
+    _desktopLyricsLocked = await _read<bool, bool>(kKeyDesktopLyricsLocked, defaults);
+    _desktopLyricsPositionX = await _read<double, double>(kKeyDesktopLyricsPositionX, defaults);
+    _desktopLyricsPositionY = await _read<double, double>(kKeyDesktopLyricsPositionY, defaults);
+    _desktopLyricsWidth = await _read<double, double>(kKeyDesktopLyricsWidth, defaults);
+    _desktopLyricsHeight = await _read<double, double>(kKeyDesktopLyricsHeight, defaults);
+    _desktopLyricsOpacity = await _read<double, double>(kKeyDesktopLyricsOpacity, defaults);
     _themeAnimationDuration = await _read<dynamic, AnimationDuration>(kKeyThemeAnimationDuration, defaults, (value) => AnimationDuration.fromJson(value));
     _themeMaterialStandard = await _read<int, int>(kKeyThemeMaterialStandard, defaults);
     _themeMode = await _read<int, ThemeMode>(kKeyThemeMode, defaults, (value) => ThemeMode.values[value]);

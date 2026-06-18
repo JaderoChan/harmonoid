@@ -1,9 +1,11 @@
 import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:system_fonts/system_fonts.dart';
 
 import 'package:harmonoid/core/configuration/configuration.dart';
+import 'package:harmonoid/core/media_player/media_player.dart';
 import 'package:harmonoid/extensions/string.dart';
 import 'package:harmonoid/localization/localization.dart';
 import 'package:harmonoid/state/desktop_lyrics_notifier.dart';
@@ -19,7 +21,6 @@ class DesktopLyricsWindow extends StatefulWidget {
 class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
   late Offset _dragStart;
   late Offset _positionStart;
-  late Size _sizeStart;
   String? _fontFamily;
   bool _showUnlockButton = false;
 
@@ -42,7 +43,6 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
   void _onPanStart(DragStartDetails details) {
     _dragStart = details.globalPosition;
     _positionStart = DesktopLyricsNotifier.instance.position;
-    _sizeStart = DesktopLyricsNotifier.instance.size;
   }
 
   void _onPanUpdate(DragUpdateDetails details) {
@@ -82,6 +82,14 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
 
   @override
   Widget build(BuildContext context) {
+    final isDesktopPlatform = switch (defaultTargetPlatform) {
+      TargetPlatform.windows || TargetPlatform.linux || TargetPlatform.macOS => true,
+      _ => false,
+    };
+    if (!isDesktopPlatform) {
+      return const SizedBox.shrink();
+    }
+
     if (_fontFamily == null) {
       return const SizedBox.shrink();
     }
@@ -107,14 +115,21 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
                 child: Stack(
                   children: [
                     // Background with transparency
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3 * desktopLyricsNotifier.opacity),
+                    Positioned.fill(
+                      child: ClipRRect(
                         borderRadius: BorderRadius.circular(12.0),
-                        backdropFilter: ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.2 * desktopLyricsNotifier.opacity),
-                          width: 1.0,
+                        child: BackdropFilter(
+                          filter: ui.ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withValues(alpha: 0.3 * desktopLyricsNotifier.opacity),
+                              borderRadius: BorderRadius.circular(12.0),
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.2 * desktopLyricsNotifier.opacity),
+                                width: 1.0,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ),
@@ -147,7 +162,7 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
                             children: [
                               _buildIconButton(
                                 icon: Icons.lock_outline,
-                                 tooltip: 'Lock',
+                                tooltip: Localization.instance.DESKTOP_LYRICS_LOCK,
                                 onPressed: () {
                                   DesktopLyricsNotifier.instance.toggleLocked();
                                 },
@@ -176,7 +191,7 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
                           ),
                           child: _buildIconButton(
                             icon: Icons.lock_open,
-                           tooltip: 'Unlock',
+                            tooltip: Localization.instance.DESKTOP_LYRICS_UNLOCK,
                             size: 24.0,
                             onPressed: () {
                               DesktopLyricsNotifier.instance.toggleLocked();
@@ -202,75 +217,77 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
 
     if (text.isEmpty) {
       return Text(
-         Localization.instance.LYRICS_NOT_FOUND,
+        Localization.instance.LYRICS_NOT_FOUND,
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-          color: Colors.white.withOpacity(0.5),
+          color: Colors.white.withValues(alpha: 0.5),
           fontFamily: _fontFamily?.nullIfBlank(),
         ),
       );
     }
 
-    // Get current position and duration for progress mask
-    final currentPosition = lyricsNotifier.index;
-    final allIndices = desktopLyricsNotifier.highlightedIndices;
+    final progress = _calculateProgress(lyricsNotifier);
+    final textStyle = Theme.of(context).textTheme.headlineMedium?.copyWith(
+          color: Colors.white,
+          fontFamily: _fontFamily?.nullIfBlank(),
+          fontSize: 32.0,
+          height: 1.4,
+        );
 
-    return Text(
-      text,
-      textAlign: TextAlign.center,
-      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-        color: Colors.white,
-        fontFamily: _fontFamily?.nullIfBlank(),
-        fontSize: 32.0,
-        height: 1.4,
-      ),
+    // Progress mask: base text + clipped highlighted text based on current lyric progress.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final widthFactor = progress.clamp(0.0, 1.0);
+        return Stack(
+          children: [
+            Text(
+              text,
+              textAlign: TextAlign.center,
+              style: textStyle?.copyWith(
+                color: Colors.white.withValues(alpha: 0.45),
+              ),
+            ),
+            ClipRect(
+              child: Align(
+                alignment: Alignment.centerLeft,
+                widthFactor: widthFactor,
+                child: Text(
+                  text,
+                  textAlign: TextAlign.center,
+                  style: textStyle,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
-   Widget _buildLyricsDisplay(
-     DesktopLyricsNotifier desktopLyricsNotifier,
-     LyricsNotifier lyricsNotifier,
-   ) {
-     final text = desktopLyricsNotifier.currentLyrics;
- 
-     if (text.isEmpty) {
-       return Text(
-         Localization.instance.LYRICS_NOT_FOUND,
-         textAlign: TextAlign.center,
-         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-           color: Colors.white.withOpacity(0.5),
-           fontFamily: _fontFamily?.nullIfBlank(),
-         ),
-       );
-     }
- 
-     // Get highlighted indices for progress display
-     final allIndices = desktopLyricsNotifier.highlightedIndices;
-     final isHighlighted = allIndices.isNotEmpty;
- 
-     return ShaderMask(
-       shaderCallback: (bounds) {
-         // Create a gradient mask for progress visualization
-         // If this lyric is highlighted, show full opacity
-         // Otherwise show reduced opacity
-         return LinearGradient(
-           colors: [
-             Colors.white.withOpacity(isHighlighted ? 1.0 : 0.5),
-             Colors.white.withOpacity(isHighlighted ? 1.0 : 0.5),
-           ],
-         ).createShader(bounds);
-       },
-       child: Text(
-         text,
-         textAlign: TextAlign.center,
-         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-           color: Colors.white,
-           fontFamily: _fontFamily?.nullIfBlank(),
-           fontSize: 32.0,
-           height: 1.4,
-         ),
-       ),
-     );
-   }
+
+  double _calculateProgress(LyricsNotifier lyricsNotifier) {
+    if (lyricsNotifier.index < 0 || lyricsNotifier.index >= lyricsNotifier.lyrics.length) {
+      return 0.0;
+    }
+
+    final nowMs = MediaPlayer.instance.state.position.inMilliseconds;
+    final currentTimestamp = lyricsNotifier.lyrics[lyricsNotifier.index].timestamp;
+
+    int? nextTimestamp;
+    for (int i = lyricsNotifier.index + 1; i < lyricsNotifier.lyrics.length; i++) {
+      final t = lyricsNotifier.lyrics[i].timestamp;
+      if (t > currentTimestamp) {
+        nextTimestamp = t;
+        break;
+      }
+    }
+
+    // Fallback duration for last line.
+    nextTimestamp ??= currentTimestamp + 4000;
+
+    final duration = (nextTimestamp - currentTimestamp).clamp(1, 60 * 1000);
+    final elapsed = (nowMs - currentTimestamp).clamp(0, duration);
+    return elapsed / duration;
+  }
   Widget _buildIconButton({
     required IconData icon,
     required String tooltip,
@@ -288,7 +305,7 @@ class _DesktopLyricsWindowState extends State<DesktopLyricsWindow> {
             child: Icon(
               icon,
               size: size,
-              color: Colors.white.withOpacity(0.8),
+              color: Colors.white.withValues(alpha: 0.8),
             ),
           ),
         ),

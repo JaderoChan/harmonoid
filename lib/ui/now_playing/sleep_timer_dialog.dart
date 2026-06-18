@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:harmonoid/localization/localization.dart';
 import 'package:harmonoid/state/sleep_timer_notifier.dart';
 
 class SleepTimerDialog extends StatefulWidget {
@@ -71,7 +72,7 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
                     const SizedBox(width: 12.0),
                     Expanded(
                       child: Text(
-                        'Sleep Timer',
+                        Localization.instance.SLEEP_TIMER,
                         style: theme.textTheme.titleMedium,
                       ),
                     ),
@@ -79,7 +80,7 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
                 ),
                 const SizedBox(height: 16.0),
                 Text(
-                  'Stop playback after',
+                  Localization.instance.SLEEP_TIMER_STOP_PLAYBACK_AFTER,
                   style: theme.textTheme.bodyMedium,
                 ),
                 const SizedBox(height: 8.0),
@@ -99,7 +100,7 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
                       .map(
                         (value) => DropdownMenuItem<int>(
                           value: value,
-                          child: Text('$value min'),
+                          child: Text('$value ${Localization.instance.SLEEP_TIMER_MINUTES_SUFFIX}'),
                         ),
                       )
                       .toList(),
@@ -114,8 +115,8 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
                   dense: true,
                   contentPadding: EdgeInsets.zero,
                   controlAffinity: ListTileControlAffinity.leading,
-                  title: const Text('Stop after current track finishes'),
-                  subtitle: const Text('If time is up while music is playing, wait for this track to end.'),
+                  title: Text(Localization.instance.SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_FINISHES),
+                  subtitle: Text(Localization.instance.SLEEP_TIMER_STOP_AFTER_CURRENT_TRACK_HINT),
                   onChanged: (value) {
                     if (value == null) return;
                     notifier.setStopAfterTrackEnd(value);
@@ -131,7 +132,9 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Text(
-                      notifier.pendingStopAfterTrackEnd ? 'Timer reached. Playback will stop after this track.' : 'Remaining: ${_formatRemaining(notifier.remaining)}',
+                      notifier.pendingStopAfterTrackEnd
+                          ? Localization.instance.SLEEP_TIMER_REACHED_WAIT_FOR_TRACK_END
+                          : '${Localization.instance.SLEEP_TIMER_REMAINING}: ${_formatRemaining(notifier.remaining)}',
                       style: theme.textTheme.bodyMedium,
                     ),
                   ),
@@ -143,18 +146,18 @@ class _SleepTimerDialogState extends State<SleepTimerDialog> {
             if (notifier.active)
               TextButton(
                 onPressed: () => notifier.cancel(),
-                child: const Text('Cancel Timer'),
+                child: Text(Localization.instance.SLEEP_TIMER_CANCEL),
               ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Close'),
+              child: Text(Localization.instance.CANCEL),
             ),
             FilledButton(
               onPressed: () {
                 notifier.start(Duration(minutes: _selectedMinutes));
                 Navigator.of(context).pop();
               },
-              child: const Text('Start'),
+              child: Text(Localization.instance.START),
             ),
           ],
         );

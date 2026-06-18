@@ -416,7 +416,7 @@ class Controls extends StatelessWidget {
                         color: nowPlayingColors.backgroundEnabledIcon,
                         icon: const Icon(Icons.schedule),
                         splashRadius: 20.0,
-                        tooltip: 'Sleep Timer',
+                        tooltip: Localization.instance.SLEEP_TIMER,
                       ),
                        Consumer<DesktopLyricsNotifier>(
                          builder: (context, desktopLyricsNotifier, _) {

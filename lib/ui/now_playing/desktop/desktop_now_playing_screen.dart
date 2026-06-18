@@ -20,6 +20,7 @@ import 'package:harmonoid/ui/now_playing/desktop/desktop_now_playing_screen_caro
 import 'package:harmonoid/ui/now_playing/now_playing_colors.dart';
 import 'package:harmonoid/ui/now_playing/now_playing_control_panel.dart';
 import 'package:harmonoid/ui/now_playing/now_playing_lyrics.dart';
+import 'package:harmonoid/ui/now_playing/sleep_timer_dialog.dart';
 import 'package:harmonoid/utils/constants.dart';
 import 'package:harmonoid/utils/material_wave_slider.dart';
 import 'package:harmonoid/utils/rendering.dart';
@@ -408,6 +409,13 @@ class Controls extends StatelessWidget {
                         icon: const Icon(Icons.add),
                         splashRadius: 20.0,
                         tooltip: Localization.instance.ADD_TO_PLAYLIST,
+                      ),
+                      IconButton(
+                        onPressed: () => SleepTimerDialog.show(context),
+                        color: nowPlayingColors.backgroundEnabledIcon,
+                        icon: const Icon(Icons.schedule),
+                        splashRadius: 20.0,
+                        tooltip: 'Sleep Timer',
                       ),
                       IconButton(
                         onPressed: () => setDesktopNowPlayingLyrics(!Configuration.instance.desktopNowPlayingLyrics),

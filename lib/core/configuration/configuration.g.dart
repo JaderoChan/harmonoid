@@ -54,6 +54,7 @@ class ConfigurationBase {
   bool get notificationLyrics => _notificationLyrics!;
   bool get nowPlayingAudioFormat => _nowPlayingAudioFormat!;
   bool get nowPlayingDisplayUponPlay => _nowPlayingDisplayUponPlay!;
+  bool get sleepTimerStopAfterTrackEnd => _sleepTimerStopAfterTrackEnd!;
   AnimationDuration get themeAnimationDuration => _themeAnimationDuration!;
   int get themeMaterialStandard => _themeMaterialStandard!;
   ThemeMode get themeMode => _themeMode!;
@@ -104,6 +105,7 @@ class ConfigurationBase {
     bool? notificationLyrics,
     bool? nowPlayingAudioFormat,
     bool? nowPlayingDisplayUponPlay,
+    bool? sleepTimerStopAfterTrackEnd,
     AnimationDuration? themeAnimationDuration,
     int? themeMaterialStandard,
     ThemeMode? themeMode,
@@ -279,6 +281,10 @@ class ConfigurationBase {
       _nowPlayingDisplayUponPlay = nowPlayingDisplayUponPlay;
       await db.setValue(kKeyNowPlayingDisplayUponPlay, kTypeBoolean, booleanValue: nowPlayingDisplayUponPlay);
     }
+    if (sleepTimerStopAfterTrackEnd != null) {
+      _sleepTimerStopAfterTrackEnd = sleepTimerStopAfterTrackEnd;
+      await db.setValue(kKeySleepTimerStopAfterTrackEnd, kTypeBoolean, booleanValue: sleepTimerStopAfterTrackEnd);
+    }
     if (themeAnimationDuration != null) {
       _themeAnimationDuration = themeAnimationDuration;
       await db.setValue(kKeyThemeAnimationDuration, kTypeJson, jsonValue: themeAnimationDuration.toJson());
@@ -349,6 +355,7 @@ class ConfigurationBase {
       /* Boolean */ kKeyNotificationLyrics: true,
       /* Boolean */ kKeyNowPlayingAudioFormat: true,
       /* Boolean */ kKeyNowPlayingDisplayUponPlay: isDesktop,
+      /* Boolean */ kKeySleepTimerStopAfterTrackEnd: false,
       /* Json    */ kKeyThemeAnimationDuration: const AnimationDuration(),
       /* Integer */ kKeyThemeMaterialStandard: isDesktop ? 2 : 3,
       /* Integer */ kKeyThemeMode: isDesktop ? ThemeMode.light.index: ThemeMode.system.index,
@@ -400,6 +407,7 @@ class ConfigurationBase {
   bool? _notificationLyrics;
   bool? _nowPlayingAudioFormat;
   bool? _nowPlayingDisplayUponPlay;
+  bool? _sleepTimerStopAfterTrackEnd;
   AnimationDuration? _themeAnimationDuration;
   int? _themeMaterialStandard;
   ThemeMode? _themeMode;
@@ -452,6 +460,7 @@ const kKeyMpvPath = 'MPV_PATH';
 const kKeyNotificationLyrics = 'NOTIFICATION_LYRICS';
 const kKeyNowPlayingAudioFormat = 'NOW_PLAYING_AUDIO_FORMAT';
 const kKeyNowPlayingDisplayUponPlay = 'NOW_PLAYING_DISPLAY_UPON_PLAY';
+const kKeySleepTimerStopAfterTrackEnd = 'SLEEP_TIMER_STOP_AFTER_TRACK_END';
 const kKeyThemeAnimationDuration = 'THEME_ANIMATION_DURATION';
 const kKeyThemeMaterialStandard = 'THEME_MATERIAL_STANDARD';
 const kKeyThemeMode = 'THEME_MODE';

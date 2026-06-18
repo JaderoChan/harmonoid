@@ -22,6 +22,7 @@ import 'package:harmonoid/ui/now_playing/now_playing_bar.dart';
 import 'package:harmonoid/ui/now_playing/now_playing_colors.dart';
 import 'package:harmonoid/ui/now_playing/now_playing_control_panel.dart';
 import 'package:harmonoid/ui/now_playing/now_playing_playlist_item.dart';
+import 'package:harmonoid/ui/now_playing/sleep_timer_dialog.dart';
 import 'package:harmonoid/ui/router.dart';
 import 'package:harmonoid/utils/constants.dart';
 import 'package:harmonoid/utils/material_wave_slider.dart';
@@ -339,6 +340,11 @@ class M3MobileNowPlayingBarState extends State<M3MobileNowPlayingBar> {
             onPressed: () => NowPlayingControlPanel.show(context),
             icon: const Icon(Icons.equalizer),
           ),
+            IconButton(
+              onPressed: () => SleepTimerDialog.show(context),
+              icon: const Icon(Icons.schedule),
+              tooltip: 'Sleep Timer',
+            ),
           Consumer<MediaLibrary>(
             builder: (context, mediaLibrary, _) {
               final uri = mediaPlayer.current.uri;

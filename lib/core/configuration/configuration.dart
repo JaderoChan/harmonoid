@@ -121,6 +121,7 @@ class Configuration extends ConfigurationBase {
     _notificationLyrics = await _read<bool, bool>(kKeyNotificationLyrics, defaults);
     _nowPlayingAudioFormat = await _read<bool, bool>(kKeyNowPlayingAudioFormat, defaults);
     _nowPlayingDisplayUponPlay = await _read<bool, bool>(kKeyNowPlayingDisplayUponPlay, defaults);
+    _sleepTimerStopAfterTrackEnd = await _read<bool, bool>(kKeySleepTimerStopAfterTrackEnd, defaults);
     _themeAnimationDuration = await _read<dynamic, AnimationDuration>(kKeyThemeAnimationDuration, defaults, (value) => AnimationDuration.fromJson(value));
     _themeMaterialStandard = await _read<int, int>(kKeyThemeMaterialStandard, defaults);
     _themeMode = await _read<int, ThemeMode>(kKeyThemeMode, defaults, (value) => ThemeMode.values[value]);

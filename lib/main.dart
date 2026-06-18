@@ -14,6 +14,7 @@ import 'package:harmonoid/localization/localization.dart';
 import 'package:harmonoid/state/lyrics_notifier.dart';
 import 'package:harmonoid/state/now_playing_color_palette_notifier.dart';
 import 'package:harmonoid/state/now_playing_visuals_notifier.dart';
+import 'package:harmonoid/state/sleep_timer_notifier.dart';
 import 'package:harmonoid/state/theme_notifier.dart';
 import 'package:harmonoid/ui/exception.dart';
 import 'package:harmonoid/ui/harmonoid.dart';
@@ -104,6 +105,7 @@ Future<void> main(List<String> args) async {
       albumGroupingParameters: Configuration.instance.mediaLibraryAlbumGroupingParameters,
     );
     await MediaPlayer.ensureInitialized();
+    await SleepTimerNotifier.ensureInitialized();
     await Intent.ensureInitialized(args: args);
     await ThemeNotifier.ensureInitialized(
       themeMode: Configuration.instance.themeMode,

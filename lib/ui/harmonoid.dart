@@ -16,6 +16,7 @@ import 'package:harmonoid/state/now_playing_color_palette_notifier.dart';
 import 'package:harmonoid/state/now_playing_mobile_notifier.dart';
 import 'package:harmonoid/state/theme_notifier.dart';
 import 'package:harmonoid/state/update_notifier.dart';
+ import 'package:harmonoid/state/desktop_lyrics_notifier.dart';
 import 'package:harmonoid/ui/media_library/media_library_flags.dart';
 import 'package:harmonoid/ui/media_library/media_library_inaccessible_directories_screen.dart';
 import 'package:harmonoid/ui/media_library/media_library_search_bar.dart';
@@ -92,19 +93,25 @@ class _HarmonoidState extends State<Harmonoid> with WidgetsBindingObserver {
         ChangeNotifierProvider(create: (_) => UpdateNotifier.instance),
         ChangeNotifierProvider(create: (_) => LyricsNotifier.instance),
         ChangeNotifierProvider(create: (_) => NowPlayingColorPaletteNotifier.instance),
+         ChangeNotifierProvider(create: (_) => DesktopLyricsNotifier.instance),
         Provider(create: (_) => NowPlayingMobileNotifier.instance),
       ],
       builder: (context, _) => Consumer<ThemeNotifier>(
         builder: (context, themeNotifier, _) => MacOSMenuBar(
           child: KeyboardShortcutsListener(
-            child: MaterialApp.router(
+             child: Stack(
+               children: [
+                 MaterialApp.router(
               scrollBehavior: const DefaultScrollBehavior(),
               debugShowCheckedModeBanner: false,
               theme: themeNotifier.theme,
               darkTheme: themeNotifier.darkTheme,
               themeMode: themeNotifier.themeMode,
               routerConfig: router,
-            ),
+                 ),
+                 const DesktopLyricsWindow(),
+               ],
+             ),
           ),
         ),
       ),

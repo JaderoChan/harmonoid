@@ -11,6 +11,7 @@ import 'package:harmonoid/core/media_library.dart';
 import 'package:harmonoid/core/media_player/media_player.dart';
 import 'package:harmonoid/extensions/string.dart';
 import 'package:harmonoid/localization/localization.dart';
+ import 'package:harmonoid/state/desktop_lyrics_notifier.dart';
 import 'package:harmonoid/state/lyrics_notifier.dart';
 import 'package:harmonoid/state/now_playing_color_palette_notifier.dart';
 import 'package:harmonoid/state/now_playing_visuals_notifier.dart';
@@ -116,6 +117,7 @@ Future<void> main(List<String> args) async {
     await LyricsNotifier.ensureInitialized();
     await NowPlayingVisualsNotifier.ensureInitialized();
     await NowPlayingColorPaletteNotifier.ensureInitialized();
+    await DesktopLyricsNotifier.ensureInitialized();
     runApp(const Harmonoid());
   } catch (exception, stacktrace) {
     debugPrint(exception.toString());

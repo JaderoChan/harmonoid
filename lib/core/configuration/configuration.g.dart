@@ -55,6 +55,13 @@ class ConfigurationBase {
   bool get nowPlayingAudioFormat => _nowPlayingAudioFormat!;
   bool get nowPlayingDisplayUponPlay => _nowPlayingDisplayUponPlay!;
   bool get sleepTimerStopAfterTrackEnd => _sleepTimerStopAfterTrackEnd!;
+  bool get desktopLyricsEnabled => _desktopLyricsEnabled!;
+  bool get desktopLyricsLocked => _desktopLyricsLocked!;
+  double get desktopLyricsPositionX => _desktopLyricsPositionX!;
+  double get desktopLyricsPositionY => _desktopLyricsPositionY!;
+  double get desktopLyricsWidth => _desktopLyricsWidth!;
+  double get desktopLyricsHeight => _desktopLyricsHeight!;
+  double get desktopLyricsOpacity => _desktopLyricsOpacity!;
   AnimationDuration get themeAnimationDuration => _themeAnimationDuration!;
   int get themeMaterialStandard => _themeMaterialStandard!;
   ThemeMode get themeMode => _themeMode!;
@@ -106,6 +113,13 @@ class ConfigurationBase {
     bool? nowPlayingAudioFormat,
     bool? nowPlayingDisplayUponPlay,
     bool? sleepTimerStopAfterTrackEnd,
+    bool? desktopLyricsEnabled,
+    bool? desktopLyricsLocked,
+    double? desktopLyricsPositionX,
+    double? desktopLyricsPositionY,
+    double? desktopLyricsWidth,
+    double? desktopLyricsHeight,
+    double? desktopLyricsOpacity,
     AnimationDuration? themeAnimationDuration,
     int? themeMaterialStandard,
     ThemeMode? themeMode,
@@ -285,6 +299,34 @@ class ConfigurationBase {
       _sleepTimerStopAfterTrackEnd = sleepTimerStopAfterTrackEnd;
       await db.setValue(kKeySleepTimerStopAfterTrackEnd, kTypeBoolean, booleanValue: sleepTimerStopAfterTrackEnd);
     }
+    if (desktopLyricsEnabled != null) {
+      _desktopLyricsEnabled = desktopLyricsEnabled;
+      await db.setValue(kKeyDesktopLyricsEnabled, kTypeBoolean, booleanValue: desktopLyricsEnabled);
+    }
+    if (desktopLyricsLocked != null) {
+      _desktopLyricsLocked = desktopLyricsLocked;
+      await db.setValue(kKeyDesktopLyricsLocked, kTypeBoolean, booleanValue: desktopLyricsLocked);
+    }
+    if (desktopLyricsPositionX != null) {
+      _desktopLyricsPositionX = desktopLyricsPositionX;
+      await db.setValue(kKeyDesktopLyricsPositionX, kTypeDouble, doubleValue: desktopLyricsPositionX);
+    }
+    if (desktopLyricsPositionY != null) {
+      _desktopLyricsPositionY = desktopLyricsPositionY;
+      await db.setValue(kKeyDesktopLyricsPositionY, kTypeDouble, doubleValue: desktopLyricsPositionY);
+    }
+    if (desktopLyricsWidth != null) {
+      _desktopLyricsWidth = desktopLyricsWidth;
+      await db.setValue(kKeyDesktopLyricsWidth, kTypeDouble, doubleValue: desktopLyricsWidth);
+    }
+    if (desktopLyricsHeight != null) {
+      _desktopLyricsHeight = desktopLyricsHeight;
+      await db.setValue(kKeyDesktopLyricsHeight, kTypeDouble, doubleValue: desktopLyricsHeight);
+    }
+    if (desktopLyricsOpacity != null) {
+      _desktopLyricsOpacity = desktopLyricsOpacity;
+      await db.setValue(kKeyDesktopLyricsOpacity, kTypeDouble, doubleValue: desktopLyricsOpacity);
+    }
     if (themeAnimationDuration != null) {
       _themeAnimationDuration = themeAnimationDuration;
       await db.setValue(kKeyThemeAnimationDuration, kTypeJson, jsonValue: themeAnimationDuration.toJson());
@@ -356,6 +398,13 @@ class ConfigurationBase {
       /* Boolean */ kKeyNowPlayingAudioFormat: true,
       /* Boolean */ kKeyNowPlayingDisplayUponPlay: isDesktop,
       /* Boolean */ kKeySleepTimerStopAfterTrackEnd: false,
+      /* Boolean */ kKeyDesktopLyricsEnabled: false,
+      /* Boolean */ kKeyDesktopLyricsLocked: false,
+      /* Double  */ kKeyDesktopLyricsPositionX: 0.0,
+      /* Double  */ kKeyDesktopLyricsPositionY: 0.0,
+      /* Double  */ kKeyDesktopLyricsWidth: 600.0,
+      /* Double  */ kKeyDesktopLyricsHeight: 200.0,
+      /* Double  */ kKeyDesktopLyricsOpacity: 1.0,
       /* Json    */ kKeyThemeAnimationDuration: const AnimationDuration(),
       /* Integer */ kKeyThemeMaterialStandard: isDesktop ? 2 : 3,
       /* Integer */ kKeyThemeMode: isDesktop ? ThemeMode.light.index: ThemeMode.system.index,
@@ -408,6 +457,13 @@ class ConfigurationBase {
   bool? _nowPlayingAudioFormat;
   bool? _nowPlayingDisplayUponPlay;
   bool? _sleepTimerStopAfterTrackEnd;
+  bool? _desktopLyricsEnabled;
+  bool? _desktopLyricsLocked;
+  double? _desktopLyricsPositionX;
+  double? _desktopLyricsPositionY;
+  double? _desktopLyricsWidth;
+  double? _desktopLyricsHeight;
+  double? _desktopLyricsOpacity;
   AnimationDuration? _themeAnimationDuration;
   int? _themeMaterialStandard;
   ThemeMode? _themeMode;
@@ -461,6 +517,13 @@ const kKeyNotificationLyrics = 'NOTIFICATION_LYRICS';
 const kKeyNowPlayingAudioFormat = 'NOW_PLAYING_AUDIO_FORMAT';
 const kKeyNowPlayingDisplayUponPlay = 'NOW_PLAYING_DISPLAY_UPON_PLAY';
 const kKeySleepTimerStopAfterTrackEnd = 'SLEEP_TIMER_STOP_AFTER_TRACK_END';
+const kKeyDesktopLyricsEnabled = 'DESKTOP_LYRICS_ENABLED';
+const kKeyDesktopLyricsLocked = 'DESKTOP_LYRICS_LOCKED';
+const kKeyDesktopLyricsPositionX = 'DESKTOP_LYRICS_POSITION_X';
+const kKeyDesktopLyricsPositionY = 'DESKTOP_LYRICS_POSITION_Y';
+const kKeyDesktopLyricsWidth = 'DESKTOP_LYRICS_WIDTH';
+const kKeyDesktopLyricsHeight = 'DESKTOP_LYRICS_HEIGHT';
+const kKeyDesktopLyricsOpacity = 'DESKTOP_LYRICS_OPACITY';
 const kKeyThemeAnimationDuration = 'THEME_ANIMATION_DURATION';
 const kKeyThemeMaterialStandard = 'THEME_MATERIAL_STANDARD';
 const kKeyThemeMode = 'THEME_MODE';

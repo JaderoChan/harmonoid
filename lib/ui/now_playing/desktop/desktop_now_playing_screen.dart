@@ -14,6 +14,7 @@ import 'package:harmonoid/extensions/media_player_state.dart';
 import 'package:harmonoid/localization/localization.dart';
 import 'package:harmonoid/models/loop.dart';
 import 'package:harmonoid/state/theme_notifier.dart';
+ import 'package:harmonoid/state/desktop_lyrics_notifier.dart';
 import 'package:harmonoid/ui/media_library/media_library_hyperlinks.dart';
 import 'package:harmonoid/ui/now_playing/desktop/desktop_now_playing_playlist.dart';
 import 'package:harmonoid/ui/now_playing/desktop/desktop_now_playing_screen_carousel.dart';
@@ -417,6 +418,21 @@ class Controls extends StatelessWidget {
                         splashRadius: 20.0,
                         tooltip: 'Sleep Timer',
                       ),
+                       Consumer<DesktopLyricsNotifier>(
+                         builder: (context, desktopLyricsNotifier, _) {
+                           return IconButton(
+                             onPressed: () => desktopLyricsNotifier.toggleEnabled(),
+                             color: desktopLyricsNotifier.isEnabled
+                                 ? nowPlayingColors.backgroundEnabledIcon
+                                 : nowPlayingColors.backgroundDisabledIcon,
+                             icon: const Icon(Icons.subtitles),
+                             splashRadius: 20.0,
+                             tooltip: desktopLyricsNotifier.isEnabled
+                                 ? Localization.instance.HIDE_LYRICS
+                                 : Localization.instance.SHOW_LYRICS,
+                           );
+                         },
+                       ),
                       IconButton(
                         onPressed: () => setDesktopNowPlayingLyrics(!Configuration.instance.desktopNowPlayingLyrics),
                         color: Configuration.instance.desktopNowPlayingLyrics ? nowPlayingColors.backgroundEnabledIcon : nowPlayingColors.backgroundDisabledIcon,
